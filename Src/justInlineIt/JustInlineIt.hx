@@ -211,6 +211,8 @@ class JustInlineIt {
                         macro var $nname:$ntype = $tvar;
                     }];
                     optBodyInternal(macro $b{vdecls.concat([unReturn(f.expr)])});
+                case macro ($e):
+                    optBodyInternal(e);
                 case _:
                     e.map(optBodyInternal);
                 }
