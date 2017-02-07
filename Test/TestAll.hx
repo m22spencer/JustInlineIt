@@ -40,7 +40,8 @@ class TestAll {
         //Ensure that ECheckType persists through texpr transformation
         opt(([0,'h']:Array<Dynamic>));
 
-        
+        //Recursive lambda is not corrupted
+        opt((function foo(n:Int) return n > 10 ? n : foo(n+1))(0)); 
     }
 
     macro static function opt(a:Expr) {

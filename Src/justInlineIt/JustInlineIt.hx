@@ -117,7 +117,7 @@ class JustInlineIt {
     static function reduceTemps(e:Expr) {
         function go(e:Expr, varsMapping:Map<String,Expr>) {
             return switch(e) {
-            case (macro var $name:$ct = ${e = {expr: EConst(CIdent(_))}}):
+            case (macro var $name:$ct = ${e = {expr: EConst(CIdent(ident))}}) if (ident != 'null'):
                 varsMapping.set(name, e);
                 macro null;
             case (macro var $name:$ct = cast ${e = {expr: EConst(CIdent(_))}}):
