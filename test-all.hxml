@@ -1,0 +1,5 @@
+-cp Src
+-cp Test
+-main TestAll
+-neko Bin/TestAll.n
+-cmd neko Bin/TestAll.n
