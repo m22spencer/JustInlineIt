@@ -1,0 +1,10 @@
+{
+    "name": "just-inline-it",
+    "url" : "https://github.com/m22spencer/JustInlineIt",
+    "license": "MIT",
+    "tags": ["cross", "macros", "inline"],
+    "description": "Control inlining during macro expansion",
+    "version": "0.0.1",
+    "releasenote": "",
+    "contributors": ["m22spencer"]
+}
