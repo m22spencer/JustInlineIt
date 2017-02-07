@@ -36,6 +36,11 @@ class TestAll {
         });
 
         opt([].map(function(x) return x+1).map(function(y) return y*2));
+
+        //Ensure that ECheckType persists through texpr transformation
+        opt(([0,'h']:Array<Dynamic>));
+
+        
     }
 
     macro static function opt(a:Expr) {

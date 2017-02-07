@@ -225,14 +225,38 @@ class JustInlineIt {
         }
 
         function texpr(e:Expr):Expr {
-            var rexp = C.getTypedExpr(C.typeExpr(e));
+            function prepare(e:Expr) {
+                return switch(e) {
+                case (macro ($e:$ct)):
+                    var s = haxe.Serializer.run(ct);
+                    macro @:pos(e.pos) { "ECheckType"; $v{s};(${prepare(e)}:$ct); };
+                case _:
+                    e.map(prepare);
+                }
+            }
+            var rexp = C.getTypedExpr(C.typeExpr(prepare(e)));
+
             return rexp;
         }
 
         var texpanded = macro ${texpr(e)};
         #if DEBUG_JUST_INLINE_IT trace('texpanded: ' + new haxe.macro.Printer().printExpr(texpanded)); #end
 
-        var tunique = uniqueVars(texpanded);
+        function fixCasts(e:Expr) {
+            return switch(e) {
+            case (macro cast $se):
+                //Compiler inserted cast, ignore
+                macro @:pos(e.pos) $se;
+            case (macro { "ECheckType"; ${{ expr: EConst(CString(cts)) }}; $se; }):
+                //User inserted ECheckType, repair
+                var ct:ComplexType = haxe.Unserializer.run(cts);
+                macro @:pos(e.pos) ($se:$ct);
+            case _:
+                e.map(fixCasts);
+            }
+        }
+
+        var tunique = uniqueVars(fixCasts(texpanded));
         #if DEBUG_JUST_INLINE_IT trace('tunique: ' + new haxe.macro.Printer().printExpr(tunique)); #end
 
         var newBody = optBody_(tunique);
