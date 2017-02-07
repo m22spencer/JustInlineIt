@@ -1,0 +1,5 @@
+-cp Examples/Pixels
+-cp Src
+-main Main
+-dce full
+-js Examples/Pixels/Main.js
