@@ -58,7 +58,7 @@ class JustInlineIt {
                 macro @:pos(e.pos) $i{varsMapping.get(ident)};
             case {expr: EVars(vl)}:
                 for (v in vl) {
-                    var tid = 'tmp_rn${tmp++}';
+                    var tid = '``tmp_rn${tmp++}'; 
                     if (v.expr != null) v.expr = go(v.expr, varsMapping);
                     varsMapping.set(v.name,tid);
                     v.name = tid;
@@ -156,7 +156,7 @@ class JustInlineIt {
                 return switch(e) {
                 case macro $i{_}: e;
                 case _:
-                    var id = 'tmp' + tmpNum++;
+                    var id = '``tmp' + tmpNum++;
                     binds.push(macro var $id = $e);
                     macro @:pos(e.pos) $i{id};
                 }
